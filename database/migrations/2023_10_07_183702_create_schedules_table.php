@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('type_id')->constrained();
             $table->string('description');
+            $table->string('title');
             $table->timestamp('starting_at')->nullable()->comment('starting date');
             $table->timestamp('conclusion_at')->nullable()->comment('conclusion date');
             $table->timestamp('due_at')->nullable()->comment('due date');

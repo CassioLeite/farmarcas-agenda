@@ -19,7 +19,8 @@ class Schedule extends Model
         'starting_at',
         'conclusion_at',
         'due_at',
-        'status'
+        'status',
+        'title',
     ];
 
     protected $casts = [
