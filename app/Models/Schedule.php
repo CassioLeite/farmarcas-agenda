@@ -17,14 +17,20 @@ class Schedule extends Model
         'type_id',
         'description',
         'starting_at',
-        'conclusion_at',
         'due_at',
+        'conclusion_at',
         'status',
         'title',
     ];
 
     protected $casts = [
-        'status' => Status::class
+        'status' => Status::class,
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'deleted_at' => 'datetime:Y-m-d H:i:s',
+        'starting_at' => 'datetime:Y-m-d H:i:s',
+        'due_at' => 'datetime:Y-m-d H:i:s',
+        'conclusion_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     public function user(): HasOne
