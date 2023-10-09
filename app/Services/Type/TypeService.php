@@ -32,6 +32,7 @@ class TypeService implements TypeServiceInterface
 
     public function store(Request $request): Type
     {
+        $request->merge(['user_id' => Auth::user()->id]);
         return $this->repository->store($request->all());
     }
 
