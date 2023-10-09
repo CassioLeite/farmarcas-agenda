@@ -26,7 +26,8 @@ class ScheduleService implements ScheduleServiceInterface
 
     public function getAll()
     {
-        return $this->repository->index();
+        $userId = Auth::user()->id;
+        return $this->repository->index($userId);
     }
 
     public function find($id = null)
@@ -36,28 +37,48 @@ class ScheduleService implements ScheduleServiceInterface
 
     public function store(Request $request): Schedule
     {
-        // Usuário authenticated
-        //$user = Auth::user();
-
-        $userId = 1;
-
+        $this->userHasAccessToSchedule($request);
         $this->verifyIfScheduleIsValid($request);
 
         return $this->repository->store($request->all());
     }
 
+    public function update(Request $request, Schedule $schedule): bool
+    {
+        $this->userHasAccessToSchedule($request);
+        $this->verifyIfScheduleIsValid($request);
+        $this->checkClosingSchedule($request);
+
+        $request->merge(['user_id' => Auth::user()->id]);
+        $result = $this->repository->update($schedule->id, $request->all());
+
+        return $result;
+    }
+
+    protected function checkClosingSchedule(Request $request): void
+    {
+        if ($request->status === Status::CLOSED->value) {
+            $request->merge(['conclusion_at' => date('Y-m-d H:i:s')]);
+        }
+    }
+
+    public function destroy(Schedule $schedule): bool
+    {
+        return $this->repository->destroy($schedule->id);
+    }
+
     protected function verifyIfScheduleIsValid(Request $request): void
     {
         if ($this->isWeekend($request)) {
-            throw new Exception("O agendamento não pode ser feito no final de semana.");
+            throw new Exception("O agendamento não pode ser feito no final de semana.", 400);
         }
 
         if (!$this->checkType($request->type_id)) {
-            throw new Exception("O tipo que você está tentando associar a um agendamento não existe.");
+            throw new Exception("O tipo que você está tentando associar a um agendamento não existe.", 400);
         }
 
         if ($this->schedulingAtExistingSchedule($request)) {
-            throw new Exception("Já existe agendamentos para a data selecionada.");
+            throw new Exception("Já existe agendamentos para a data selecionada.", 400);
         }
     }
 
@@ -85,31 +106,12 @@ class ScheduleService implements ScheduleServiceInterface
         return $this->typeRepository->find($id);
     }
 
-    public function update(Request $request, Schedule $schedule): bool
+    protected function userHasAccessToSchedule(Request $request)
     {
-        // Usuário authenticated
-        //$user = Auth::user()->id;
-        if ( 1 !== $schedule->id) {
-            throw new Exception("O correu um erro ao tentar atualizar o agendamento.");
+        $userId = Auth::user()->id;
+
+        if ($userId != $request->user_id) {
+            throw new Exception("O correu um erro ao tentar atualizar o agendamento.", 403);
         }
-
-        $this->verifyIfScheduleIsValid($request);
-        $this->checkClosingSchedule($request);
-
-        $result = $this->repository->update($schedule->id, $request->all());
-
-        return $result;
-    }
-
-    protected function checkClosingSchedule(Request $request): void
-    {
-        if ($request->status === Status::CLOSED->value) {
-            $request->merge(['conclusion_at' => date('Y-m-d H:i:s')]);
-        }
-    }
-
-    public function destroy(Schedule $schedule): bool
-    {
-        return $this->repository->destroy($schedule->id);
     }
 }

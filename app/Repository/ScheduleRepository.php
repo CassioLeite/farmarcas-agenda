@@ -2,10 +2,7 @@
 
 namespace App\Repository;
 
-use App\Enums\Status;
 use App\Models\Schedule;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 
 class ScheduleRepository extends AbstractRepository
 {
@@ -16,9 +13,9 @@ class ScheduleRepository extends AbstractRepository
         $this->model = $schedule;
     }
 
-    public function index()
+    public function index($userId)
     {
-        return $this->model->get();
+        return $this->model->where('user_id', '=', $userId)->get();
     }
 
     public function find($id = null)

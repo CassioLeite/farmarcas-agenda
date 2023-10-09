@@ -17,14 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::prefix('schedule')->group( function () {
-//    Route::get('/' , [ScheduleController::class,'index']);
-//    //Route::get('schedule/{schedule}' , [ScheduleController::class,'show'])->middleware('auth:sanctum');
-//    Route::post('/' , [ScheduleController::class,'store']);
-//    Route::put('/{schedule}' , [ScheduleController::class,'edit']);
-//    Route::delete('/{schedule}' , [ScheduleController::class,'destroy']);
-//});
-
 Route::prefix('auth')->group( function () {
     Route::post('/register' , [LoginController::class,'register']);
     Route::post('/login' , [LoginController::class,'login']);
@@ -41,12 +33,12 @@ Route::group(['prefix' => 'type', 'middleware' => ['auth:sanctum']], function(){
 
 Route::group(['prefix' => 'schedule', 'middleware' => ['auth:sanctum']], function(){
     Route::get('/' , [ScheduleController::class,'index']);
-    Route::get('schedule/{schedule}' , [ScheduleController::class,'show'])->middleware('auth:sanctum');
+    Route::get('/{schedule}' , [ScheduleController::class,'show']);
     Route::post('/' , [ScheduleController::class,'store']);
     Route::put('/{schedule}' , [ScheduleController::class,'edit']);
     Route::delete('/{schedule}' , [ScheduleController::class,'destroy']);
 });
 
-Route::middleware('auth:sanctum')->get('/schedule', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

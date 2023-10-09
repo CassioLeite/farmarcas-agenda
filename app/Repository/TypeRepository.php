@@ -13,9 +13,9 @@ class TypeRepository extends AbstractRepository
         $this->model = $type;
     }
 
-    public function index()
+    public function index($userId)
     {
-        return $this->model->get();
+        return $this->model->where('user_id', '=', $userId)->get();
     }
 
     public function find($id = null)
