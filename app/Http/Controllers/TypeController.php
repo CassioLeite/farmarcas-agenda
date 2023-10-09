@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Type;
 use App\Repository\TypeRepository;
 use App\Services\Type\TypeService;
+use App\Traits\JsonResponse;
 use Illuminate\Http\Request;
 
 class TypeController extends Controller
 {
+    use JsonResponse;
+
     protected $model;
     protected $service;
     protected $repository;
@@ -24,14 +27,9 @@ class TypeController extends Controller
         try {
             $type = $this->service->getAll($request);
  
-            return response()->json([
-                'success' => true,
-                'data'    => $type,
-                'message' => 'Listando tipos...',
-            ]);
-            
+            return $this->success($type, "Listagem de tipo de gendamento relizada com sucesso.");
         } catch (\Throwable $th) {
-            //throw $th;
+            return $this->error($th);
         }
     }
 
@@ -40,14 +38,9 @@ class TypeController extends Controller
         try {
             $type = $this->service->find($id);
 
-            return response()->json([
-                'success' => true,
-                'data'    => $type,
-                'message' => 'Listando tipos...',
-            ]);
-
+            return $this->success($type, "Tipo de gendamento recuperado com sucesso.");
         } catch (\Throwable $th) {
-            //throw $th;
+            return $this->error($th);
         }
     }
 
@@ -56,14 +49,9 @@ class TypeController extends Controller
         try {
             $type = $this->service->store($request);
 
-            return response()->json([
-                'success' => true,
-                'data'    => $type,
-                'message' => 'Listando tipos...',
-            ]);
-
+            return $this->success($type, "Tipo de gendamento registrado com sucesso.");
         } catch (\Throwable $th) {
-            //throw $th;
+            return $this->error($th);
         }
     }
 
@@ -72,14 +60,9 @@ class TypeController extends Controller
         try {
             $type = $this->service->update($request, $type);
 
-            return response()->json([
-                'success' => true,
-                'data'    => $type,
-                'message' => 'Listando tipos...',
-            ]);
-
+            return $this->success($type, "Tipo de gendamento atualizado com sucesso.");
         } catch (\Throwable $th) {
-            //throw $th;
+            return $this->error($th);
         }
     }
 
@@ -88,15 +71,9 @@ class TypeController extends Controller
         try {
             $type = $this->service->destroy($type);
 
-            return response()->json([
-                'success' => true,
-                'data'    => $type,
-                'message' => 'Listando tipos...',
-            ]);
-
+            return $this->success($type, "Tipo de gendamento excluído com sucesso.");
         } catch (\Throwable $th) {
-            //throw $th;
+            return $this->error($th);
         }
     }
-
 }

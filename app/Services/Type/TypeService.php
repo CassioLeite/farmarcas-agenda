@@ -4,7 +4,9 @@ namespace App\Services\Type;
 
 use App\Models\Type;
 use App\Repository\TypeRepository;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TypeService implements TypeServiceInterface
 {
@@ -19,7 +21,8 @@ class TypeService implements TypeServiceInterface
 
     public function getAll()
     {
-        return $this->repository->index();
+        $userId = Auth::user()->id;
+        return $this->repository->index($userId);
     }
 
     public function find($id = null)
