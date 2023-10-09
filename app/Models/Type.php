@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Type extends Model
 {
@@ -12,6 +13,7 @@ class Type extends Model
 
     protected $fillable = [
         'description',
+        'user_id',
     ];
 
     protected $casts = [
@@ -22,6 +24,11 @@ class Type extends Model
 
     public function schedules(): HasMany
     {
-        return $this->hasMany(Type::class);
+        return $this->hasMany(Schedule::class);
+    }
+
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class);
     }
 }

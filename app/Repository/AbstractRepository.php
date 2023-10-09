@@ -14,8 +14,6 @@ abstract class AbstractRepository implements RepositoryInterface
         $this->model = $model;
     }
 
-    // Implementar Index
-
     public function find($id = null)
     {
         if ($id) {
