@@ -22,6 +22,15 @@ class TypeController extends Controller
         $this->repository = $repository;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/type",
+     *     summary="List all types of scheduling for the authenticated user.",
+     *     tags={"Type"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response=200, description="Listagem de tipo de gendamento relizada com sucesso.", @OA\JsonContent())
+     * )
+     */
     public function index(Request $request)
     {
         try {
@@ -33,6 +42,22 @@ class TypeController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/type/{id}",
+     *     summary="Show a specific type of scheduling for the authenticated user.",
+     *     tags={"Type"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="Type's id",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response=200, description="Tipo de gendamento recuperado com sucesso.", @OA\JsonContent())
+     * )
+     */
     public function show($id)
     {
         try {
@@ -44,6 +69,33 @@ class TypeController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/type",
+     *     summary="Register a type.",
+     *     tags={"Type"},
+     *     @OA\Parameter(
+     *         name="description",
+     *         in="query",
+     *         description="Type's description",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *      @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             @OA\MediaType(
+     *                 mediaType="multipart/form-data",
+     *                 @OA\Schema(
+     *                     type="object",
+     *                     @OA\Property(property="description", type="string", example="Esportes"),
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response=200, description="Tipo de gendamento registrado com sucesso.", @OA\JsonContent())
+     * )
+     */
     public function store(Request $request)
     {
         try {
@@ -55,6 +107,33 @@ class TypeController extends Controller
         }
     }
 
+    /**
+     * @OA\Put(
+     *     path="/type/{id}",
+     *     summary="Edit a Type's register.",
+     *     tags={"Type"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="Type's id",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *      @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             @OA\MediaType(
+     *                 mediaType="multipart/form-data",
+     *                 @OA\Schema(
+     *                     type="object",
+     *                     @OA\Property(property="description", type="string", example="Esportes"),
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response=200, description="Tipo de gendamento atualizado com sucesso.", @OA\JsonContent())
+     * )
+     */
     public function edit(Request $request, Type $type)
     {
         try {
@@ -66,6 +145,22 @@ class TypeController extends Controller
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/type/{id}",
+     *     summary="Delete a Type's register.",
+     *     tags={"Type"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="Type's id",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(response=200, description="Tipo de gendamento excluído com sucesso.", @OA\JsonContent())
+     * )
+     */
     public function destroy(Type $type)
     {
         try {
