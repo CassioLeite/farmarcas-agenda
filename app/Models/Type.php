@@ -14,6 +14,12 @@ class Type extends Model
         'description',
     ];
 
+    protected $casts = [
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'deleted_at' => 'datetime:Y-m-d H:i:s',
+    ];
+
     public function schedules(): HasMany
     {
         return $this->hasMany(Type::class);

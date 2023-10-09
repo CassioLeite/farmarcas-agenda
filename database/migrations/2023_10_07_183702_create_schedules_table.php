@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('description');
             $table->string('title');
             $table->timestamp('starting_at')->nullable()->comment('starting date');
-            $table->timestamp('conclusion_at')->nullable()->comment('conclusion date');
             $table->timestamp('due_at')->nullable()->comment('due date');
+            $table->timestamp('conclusion_at')->nullable()->comment('conclusion date');
             $table->char('status', 1)->comment('status - aberto/concluido');
             $table->timestamps();
             $table->softDeletes();
