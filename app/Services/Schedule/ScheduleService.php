@@ -49,6 +49,7 @@ class ScheduleService implements ScheduleServiceInterface
         $this->verifyIfScheduleIsValid($request);
         $this->checkClosingSchedule($request);
 
+        $request->merge(['user_id' => Auth::user()->id]);
         $result = $this->repository->update($schedule->id, $request->all());
 
         return $result;

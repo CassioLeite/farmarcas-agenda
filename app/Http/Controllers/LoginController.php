@@ -11,6 +11,29 @@ class LoginController extends Controller
 {
     use JsonResponse;
 
+    /**
+     * @OA\Post(
+     *     path="/auth/login",
+     *     summary="Authenticate user and generate JWT token",
+     *     tags={"Authentication"},
+     *     @OA\Parameter(
+     *         name="email",
+     *         in="query",
+     *         description="User's email",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="password",
+     *         in="query",
+     *         description="User's password",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response="200", description="", @OA\JsonContent()),
+     *     @OA\Response(response="401", description="Credenciais invalidas.", @OA\JsonContent()),
+     * )
+     */
     public function login(Request $request)
     {
         try {
@@ -34,6 +57,15 @@ class LoginController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/auth/logout",
+     *     summary="Logout user and delete JWT token",
+     *     tags={"Authentication"},
+     *     @OA\Response(response="204", description=""),
+     *     security={{"bearerAuth":{}}}
+     * )
+     */
     public function logout()
     {
         try {
@@ -45,6 +77,37 @@ class LoginController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/auth/register",
+     *     summary="Authenticate user and generate JWT token",
+     *     tags={"Authentication"},
+     *     @OA\Parameter(
+     *         name="email",
+     *         in="query",
+     *         description="User's email",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="password",
+     *         in="query",
+     *         description="User's password",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="name",
+     *         in="query",
+     *         description="User's name",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response="200", description="Usuário criado com sucesso.", @OA\JsonContent()),
+     *     @OA\Response(response="500", description="E-mail já está sendo utilizado.", @OA\JsonContent()),
+     *     @OA\Response(response="409", description="Erro ao criar usuário.", @OA\JsonContent()),
+     * )
+     */
     public function register(Request $request, User $user)
     {
         try {
@@ -65,7 +128,7 @@ class LoginController extends Controller
             $user = $user->create($userData);
 
             if (!$user) {
-                throw new Exception("Erro ao criar usuário", 500);
+                throw new Exception("Erro ao criar usuário.", 409);
             }
 
             return $this->success($user, "Usuário criado com sucesso.");
